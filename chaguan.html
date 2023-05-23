@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html style="width: 100%; overflow-x:hidden;">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible">
+		<meta name="viewport"
+			content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<title>异世界茶馆</title>
+		<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.13.2/skins/default/aliplayer-min.css" />
+		<script type="text/javascript" charset="utf-8"
+			src="https://g.alicdn.com/de/prismplayer/2.13.2/aliplayer-min.js"></script>
+	</head>
+	<body>
+		<div style="position:absolute; margin:-8px -8px;" class="prism-player" id="player-con"></div>
+		<script>
+			var request = (function() {
+				var obj = {};
+				var arr = window.location.search.slice(1).split("&");
+				for (var i = 0, len = arr.length; i < len; i++) {
+					var nv = arr[i].split("=");
+					obj[unescape(nv[0]).toLowerCase()] = unescape(nv[1]);
+				}
+				return obj;
+			})();
+			if (request.url == "") {
+				request.url = "";
+			}
+			var player = new Aliplayer({
+				"id": "player-con",
+				"source": request.url,
+				"width": "100%",
+				"height": "100%",
+				"autoplay": true,
+				"isLive": false,
+				"rePlay": false,
+				"playsinline": true,
+				"preload": true,
+				"controlBarVisibility": "click",
+				"showBarTime": 5000,
+				"useH5Prism": true
+			}, function(player) {
+				console.log("The player is created");
+			});
+
+			function Click() {
+				window.event.returnValue = false;
+			}
+			document.oncontextmenu = Click;
+			//禁用右键（防止右键查看源代码） 
+			window.oncontextmenu = function() {
+				return false;
+			}
+			//禁止任何键盘敲击事件（防止F12和shift+ctrl+i调起开发者工具） 
+			window.onkeydown = window.onkeyup = window.onkeypress = function() {
+				window.event.returnValue = false;
+				return false;
+			}
+			//如果用户在工具栏调起开发者工具，那么判断浏览器的可视高度和可视宽度是否有改变，如有改变则关闭本页面 
+			var h = window.innerHeight,
+				w = window.innerWidth;
+			window.onresize = function() {
+				if (h != window.innerHeight || w != window.innerWidth) {
+					window.close();
+					window.location = "about:blank";
+				}
+			}
+		</script>
+	</body>
